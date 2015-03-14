@@ -9,8 +9,6 @@ package object implicits {
 	implicit class buttonExtensions(val self: Button) 
 		extends ActionListenerExtension
 	
-	
-		
 	implicit class menuItemExtensions(val self: MenuItem)
 		extends ActionListenerExtension
 	
@@ -36,6 +34,6 @@ package object implicits {
 	
 	implicit class jMenuItemExtensions(val self: JMenuItem)
 		extends ChangeListenerExtension
-	//new JMenuItem("").addBC
+		
 		
 }
