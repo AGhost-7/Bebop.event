@@ -4,7 +4,7 @@ import javax.swing._
 import java.awt._
 import java.awt.event._
 
-package object event {
+package object implicits {
 	
 	implicit class jbuttonExtensions(val self: Button) 
 		extends ActionListenerExtension

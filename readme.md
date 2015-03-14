@@ -15,7 +15,7 @@ translated to an anonymous function:
 import java.awt.event.ActionEvent
 import javax.swing.JButton
 
-import aghost7.bebop.event._
+import aghost7.bebop.event.implicits._
 
 val btn = new JButton("Greet")
 // all "add" methods have a B added since implicit classes don't
@@ -31,7 +31,7 @@ pascal case, like so:
 import java.awt.event.{WindowListener, WindowEvent}
 import javax.swing.JFrame
 
-import aghost7.bebop.event._
+import aghost7.bebop.event.implicits._
 
 val frame = new JFrame("Greetings from AGhost")
 frame.addBWindowListener {
@@ -47,7 +47,7 @@ frame.addBWindowListener {
 There's also the 'on' line of methods:
 ```scala
 import java.awt.event.ComponentEvent
-import aghost7.bebop.event._
+import aghost7.bebop.event.implicits._
 
 val btn = new JButton("Greet")
 btn.onComponentResized { ev: ComponentEvent =>
