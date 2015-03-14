@@ -46,7 +46,7 @@ private [event] class RoundRobinScheduler extends Runnable {
 		val startAt = quant + (millis / unit)
 		val group: (Long, () => Unit) = (startAt, callback)
 		scheduled.synchronized{
-			scheduled = scheduled :+ group
+			scheduled = (scheduled :+ group).sortBy { _._1 }
 		}
 	}
 }
@@ -97,6 +97,12 @@ object BConcurrent {
 		scheduler.schedule(millis, () => callback)
 	}
 	
+	/** Starts a thread which will execute the given function */
+	def startThread(run: => Unit): Thread = {
+		val t = new Thread(new CallbackRunnable(run))
+		t.start
+		t
+	}
 	
 	/** Starts a javax.swing.Timer instance and returns it. */
 	def looping(millis: Int)(callback: ActionEvent => Unit) : Looper = {
@@ -113,5 +119,8 @@ object BConcurrent {
 			scheduler.executor.shutdown()
 		}
 	}
+	
+	
+	
 }
 
