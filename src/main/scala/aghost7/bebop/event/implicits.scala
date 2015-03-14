@@ -34,6 +34,5 @@ package object implicits {
 	
 	implicit class jMenuItemExtensions(val self: JMenuItem)
 		extends ChangeListenerExtension
-		
-		
+	
 }

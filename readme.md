@@ -74,4 +74,51 @@ val listen = txt.onKeyPressed { ev =>
 txt.removeKeyListener(listen)
 ```
 
+Some multi-threading utilities are included:
+```scala
+import aghost7.bebop.event.BConcurrent
+import javax.swing.JButton
+	
+val btn = new JButton("Ok")
+
+// When the scheduler is called for the first time, it will start an executor 
+// service and a scheduling thread. This method is more efficient to call
+// multiple times compared to he delayCommandOnce.
+BConcurrent.delayCommand(1000) {
+	// there is invokeAndWait as well
+	BConcurrent.invokeLater {
+		btn.setName("Not Ok!")
+		btn.setEnabled(false)
+	}
+}
+
+// Code above can be compressed to the following:
+import BConcurrent._
+invokeLater(1000){
+	btn.setName("Not Ok!")
+	btn.setEnabled(false)
+}
+
+// delayCommandOnce doesn't "recycle" the thread, and instead spawns a new
+// thread every time. In other words, this can be useful for blocking delayed 
+// calls, etc.
+delayCommandOnce(1000)(greetLoop)
+
+def greetLoop: Unit = {
+	println("hello")
+	Thread.sleep(1000)
+	greetLoop
+}
+
+// javax.swing.Timer spawner
+import java.awt.event.ActionEvent
+
+var count = 0
+val loop = looping(100) { ev: ActionEvent =>
+	println("loop " + count)
+	count += 1
+}
+
+delayCommand(1000) { loop.stop }
+```
 
