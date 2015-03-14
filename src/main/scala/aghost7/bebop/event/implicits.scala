@@ -6,8 +6,10 @@ import java.awt.event._
 
 package object implicits {
 	
-	implicit class jbuttonExtensions(val self: Button) 
+	implicit class buttonExtensions(val self: Button) 
 		extends ActionListenerExtension
+	
+	
 		
 	implicit class menuItemExtensions(val self: MenuItem)
 		extends ActionListenerExtension
@@ -27,5 +29,13 @@ package object implicits {
 		with MouseListenerExtension
 		with MouseMotionListenerExtension
 		with MouseWheelListenerExtension
+
+	// swing specific
+	implicit class abstractButtonExtensions(val self: AbstractButton)
+		extends ActionListenerExtension
+	
+	implicit class jMenuItemExtensions(val self: JMenuItem)
+		extends ChangeListenerExtension
+	//new JMenuItem("").addBC
 		
 }

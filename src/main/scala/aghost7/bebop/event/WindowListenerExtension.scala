@@ -5,7 +5,7 @@ import java.awt.Window
 
 
 sealed trait BWindowEvent {
-	def ev: WindowEvent
+	val ev: WindowEvent
 }
 
 case class WindowClosed(ev: WindowEvent) extends BWindowEvent
@@ -19,44 +19,72 @@ case class WindowOpened(ev: WindowEvent) extends BWindowEvent
 trait WindowListenerExtension {
 	val self: Window
 	
-	def onWindowActivated(func: WindowEvent => Unit): Unit =
-		self.addWindowFocusListener(new WindowAdapter(){
+	def onWindowActivated(func: WindowEvent => Unit): WindowListener = {
+		val l = new WindowAdapter(){
 			override def windowActivated(ev: WindowEvent): Unit = func(ev)
-		})
+		}
+		self.addWindowFocusListener(l)
+		l
+	}
 		
-	def onWindowClosed(func: WindowEvent => Unit): Unit =
-		self.addWindowFocusListener(new WindowAdapter(){
+		
+	def onWindowClosed(func: WindowEvent => Unit): WindowListener = {
+		val l = new WindowAdapter(){
 			override def windowClosed(ev: WindowEvent): Unit = func(ev)
-		})
+		}
+		self.addWindowFocusListener(l)
+		l
+	}
 		
-	def onWindowClosing(func: WindowEvent => Unit): Unit =
-		self.addWindowFocusListener(new WindowAdapter(){
+		
+	def onWindowClosing(func: WindowEvent => Unit): WindowListener = {
+		val l = new WindowAdapter(){
 			override def windowClosing(ev: WindowEvent): Unit = func(ev)
-		})
+		}
+		self.addWindowFocusListener(l)
+		l
+	}
 		
-	def onWindowDeactivated(func: WindowEvent => Unit): Unit =
-		self.addWindowFocusListener(new WindowAdapter(){
+		
+	def onWindowDeactivated(func: WindowEvent => Unit): WindowListener = {
+		val l = new WindowAdapter(){
 			override def windowDeactivated(ev: WindowEvent): Unit = func(ev)
-		})
+		}
+		self.addWindowFocusListener(l)
+		l
+	}
 		
-	def onWindowDeiconified(func: WindowEvent => Unit): Unit =
-		self.addWindowFocusListener(new WindowAdapter(){
+		
+	def onWindowDeiconified(func: WindowEvent => Unit): WindowListener = {
+		val l = new WindowAdapter(){
 			override def windowDeiconified(ev: WindowEvent): Unit = func(ev)
-		})
+		}
+		self.addWindowFocusListener(l)
+		l
+	}
 		
-	def onWindowIconified(func: WindowEvent => Unit): Unit =
-		self.addWindowFocusListener(new WindowAdapter(){
+		
+	def onWindowIconified(func: WindowEvent => Unit): WindowListener = {
+		val l = new WindowAdapter(){
 			override def windowIconified(ev: WindowEvent): Unit = func(ev)
-		})
+		}
+		self.addWindowFocusListener(l)
+		l
+	}
 		
-	def onWindowOpened(func: WindowEvent => Unit): Unit =
-		self.addWindowFocusListener(new WindowAdapter(){
+		
+	def onWindowOpened(func: WindowEvent => Unit): WindowListener = {
+		val l = new WindowAdapter(){
 			override def windowOpened(ev: WindowEvent): Unit = func(ev)
-		})
+		}
+		self.addWindowFocusListener(l)
+		l
+	}
 		
-	def addBWindowListener(part: PartialFunction[BWindowEvent, Unit]) : Unit = {
+		
+	def addBWindowListener(part: PartialFunction[BWindowEvent, Unit]) : WindowListener = {
 		val func = part.lift
-		self.addWindowListener(new WindowListener() {
+		val l = new WindowListener() {
 			
 			def windowActivated(ev: WindowEvent): Unit = 
 				func(WindowActivated(ev))
@@ -78,6 +106,8 @@ trait WindowListenerExtension {
 				
 			def windowOpened(ev: WindowEvent): Unit =
 				func(WindowOpened(ev))
-		})
+		}
+		self.addWindowListener(l)
+		l
 	}
 }

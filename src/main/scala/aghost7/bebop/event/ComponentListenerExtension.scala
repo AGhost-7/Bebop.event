@@ -15,33 +15,41 @@ case class ComponentShown(ev: ComponentEvent) extends BComponentEvent
 trait ComponentListenerExtension {
 	val self: Component
 	
-	def onComponentHidden(func: ComponentEvent => Unit) : Unit = {
-		self.addComponentListener(new ComponentAdapter(){
+	def onComponentHidden(func: ComponentEvent => Unit): ComponentListener = {
+		val l = new ComponentAdapter(){
 			override def componentHidden(ev: ComponentEvent): Unit = func(ev)
-		})
+		}
+		self.addComponentListener(l)
+		l
 	}
 	
-	def onComponentMoved(func: ComponentEvent => Unit): Unit = {
-		self.addComponentListener(new ComponentAdapter(){
+	def onComponentMoved(func: ComponentEvent => Unit): ComponentListener = {
+		val l = new ComponentAdapter(){
 			override def componentMoved(ev: ComponentEvent): Unit = func(ev)
-		})
+		}
+		self.addComponentListener(l)
+		l
 	}
 	
-	def onComponentResized(func: ComponentEvent => Unit): Unit = {
-		self.addComponentListener(new ComponentAdapter(){
+	def onComponentResized(func: ComponentEvent => Unit): ComponentListener = {
+		val l = new ComponentAdapter(){
 			override def componentResized(ev: ComponentEvent): Unit = func(ev)
-		})
+		}
+		self.addComponentListener(l)
+		l
 	}
 	
-	def onComponentShown(func: ComponentEvent => Unit): Unit = {
-		self.addComponentListener(new ComponentAdapter(){
+	def onComponentShown(func: ComponentEvent => Unit): ComponentListener = {
+		val l = new ComponentAdapter(){
 			override def componentShown(ev: ComponentEvent): Unit = func(ev)
-		})
+		}
+		self.addComponentListener(l)
+		l
 	}
 	
-	def addBComponentListener(part: PartialFunction[BComponentEvent, Unit]): Unit = {
+	def addBComponentListener(part: PartialFunction[BComponentEvent, Unit]): ComponentListener = {
 		val func = part.lift
-		self.addComponentListener(new ComponentListener(){
+		val l = new ComponentListener(){
 			def componentHidden(ev: ComponentEvent): Unit = 
 				func(ComponentHidden(ev))
 			def componentMoved(ev: ComponentEvent): Unit =
@@ -50,6 +58,8 @@ trait ComponentListenerExtension {
 				func(ComponentResized(ev))
 			def componentShown(ev: ComponentEvent): Unit =
 				func(ComponentShown(ev))
-		})
+		}
+		self.addComponentListener(l)
+		l
 	}
 }

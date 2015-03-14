@@ -6,14 +6,22 @@ import java.awt.Component
 trait MouseWheelListenerExtension {
 	val self: Component
 	
-	def onMouseWheelMoved(func: MouseWheelEvent => Unit): Unit = 
-		self.addMouseWheelListener(new MouseWheelListener(){
+	def onMouseWheelMoved(func: MouseWheelEvent => Unit): MouseWheelListener = {
+		val l = new MouseWheelListener(){
 			def mouseWheelMoved(ev: MouseWheelEvent): Unit = func(ev)
-		})
+		}
+		self.addMouseWheelListener(l)
+		l
+	}
 		
-	def addBMouseWheelListener(func: MouseWheelEvent => Unit): Unit = 
-		self.addMouseWheelListener(new MouseWheelListener(){
+		
+	def addBMouseWheelListener(func: MouseWheelEvent => Unit): MouseWheelListener = {
+		val l = new MouseWheelListener(){
 			def mouseWheelMoved(ev: MouseWheelEvent): Unit = func(ev)
-		})
+		}
+		self.addMouseWheelListener(l)
+		l
+	}
+		
 	
 }

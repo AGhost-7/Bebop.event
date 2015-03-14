@@ -12,21 +12,31 @@ case class MouseMoved(ev: MouseEvent) extends BMouseMotionEvent
 trait MouseMotionListenerExtension {
 	val self: Component
 	
-	def onMouseDragged(func: MouseEvent => Unit) : Unit = 
-		self.addMouseMotionListener(new MouseAdapter(){
+	def onMouseDragged(func: MouseEvent => Unit) : MouseMotionListener = {
+		val l = new MouseAdapter(){
 			override def mouseDragged(ev: MouseEvent): Unit = func(ev)
-		})
+		}
+		self.addMouseMotionListener(l)
+		l
+	}
 		
-	def onMouseMoved(func: MouseEvent => Unit) : Unit = 
-		self.addMouseMotionListener(new MouseAdapter(){
+		
+	def onMouseMoved(func: MouseEvent => Unit) : MouseMotionListener = {
+		val l = new MouseAdapter(){
 			override def mouseMoved(ev: MouseEvent): Unit = func(ev)
-		})
+		}
+		self.addMouseMotionListener(l)
+		l
+	}
 		
-	def addBMouseMotionListener(part: PartialFunction[BMouseMotionEvent, Unit]): Unit = {
+		
+	def addBMouseMotionListener(part: PartialFunction[BMouseMotionEvent, Unit]): MouseMotionListener = {
 		val func = part.lift
-		self.addMouseMotionListener(new MouseMotionListener(){
+		val l = new MouseMotionListener(){
 			def mouseDragged(ev: MouseEvent): Unit = func(MouseDragged(ev))
 			def mouseMoved(ev: MouseEvent): Unit = func(MouseMoved(ev))
-		})
+		}
+		self.addMouseMotionListener(l)
+		l
 	}
 }

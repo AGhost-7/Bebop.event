@@ -13,24 +13,34 @@ case class FocusLost(ev: FocusEvent) extends BFocusEvent
 trait FocusListenerExtension {
 	val self: Component
 	
-	def onFocusGained(func: FocusEvent => Unit) : Unit =
-		self.addFocusListener(new FocusAdapter(){
+	def onFocusGained(func: FocusEvent => Unit) : FocusListener = {
+		val l = new FocusAdapter(){
 			override def focusGained(ev: FocusEvent) = func(ev)
-		})
+		}
+		self.addFocusListener(l)
+		l
+	}
+		
 	
-	def onFocusLost(func: FocusEvent => Unit) : Unit =
-		self.addFocusListener(new FocusAdapter(){
+	def onFocusLost(func: FocusEvent => Unit) : FocusListener = {
+		val l = new FocusAdapter(){
 			override def focusLost(ev: FocusEvent) = func(ev)
-		})
+		}
+		self.addFocusListener(l)
+		l
+	}
+		
 	
-	def addBFocusListener(part: PartialFunction[BFocusEvent, Unit]): Unit = {
+	def addBFocusListener(part: PartialFunction[BFocusEvent, Unit]): FocusListener = {
 		val func = part.lift
-		self.addFocusListener(new FocusListener(){
+		val l = new FocusListener(){
 			def focusGained(ev: FocusEvent): Unit = 
 				func(FocusGained(ev))
 			def focusLost(ev: FocusEvent): Unit = 
 				func(FocusLost(ev))
-		})
+		}
+		self.addFocusListener(l)
+		l
 	}
 		
 }

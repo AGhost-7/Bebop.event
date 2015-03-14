@@ -31,6 +31,7 @@ pascal case, like so:
 import java.awt.event.{WindowListener, WindowEvent}
 import javax.swing.JFrame
 
+import aghost7.bebop.event._
 import aghost7.bebop.event.implicits._
 
 val frame = new JFrame("Greetings from AGhost")
@@ -47,6 +48,7 @@ frame.addBWindowListener {
 There's also the 'on' line of methods:
 ```scala
 import java.awt.event.ComponentEvent
+import javax.swing.JButton
 import aghost7.bebop.event.implicits._
 
 val btn = new JButton("Greet")
@@ -57,3 +59,19 @@ btn.onMouseExited { _ =>
 	println("Not going to click me huh?") 
 }
 ```
+
+The methods return the listener instance so you can unregister the listener if you 
+ever need to:
+```scala
+import javax.swing.{JButton, JTextArea}
+import aghost7.bebop.event.implicits._
+
+val txt = new JTextArea()
+
+val listen = txt.onKeyPressed { ev => 
+	println("key pressed") 
+}
+txt.removeKeyListener(listen)
+```
+
+
